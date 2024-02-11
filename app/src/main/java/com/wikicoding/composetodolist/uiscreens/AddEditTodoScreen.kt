@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.os.Build
 import android.util.Log
 import android.widget.DatePicker
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -146,12 +148,7 @@ fun AddEditTodoScreen(navController: NavController, todoViewModel: TodoViewModel
                         )
                     }
                     scope.launch {
-//                        navController.navigateUp()
-                        navController.navigate(Screen.HomeScreen.route) {
-                            popUpTo(Screen.AddEditScreen.route + "/${id}") {
-                                inclusive = true
-                            }
-                        }
+                        navController.navigateUp()
                     }
                 }) {
                 Text(text = if (id == 0) "Add Todo" else "Update Todo")

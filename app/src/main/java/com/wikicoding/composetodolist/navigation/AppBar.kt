@@ -25,7 +25,7 @@ fun AppBarView(title: String, onBackNavClicked: () -> Unit = {}) {
                 IconButton(onClick = { onBackNavClicked() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.primary,
                         contentDescription = null,
                     )
                 }
@@ -38,7 +38,7 @@ fun AppBarView(title: String, onBackNavClicked: () -> Unit = {}) {
     TopAppBar(
         title = {
             Text(
-                text = title, color = colorResource(id = R.color.white),
+                text = title, color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(start = 4.dp)
                     .heightIn(max = 24.dp)
@@ -46,6 +46,6 @@ fun AppBarView(title: String, onBackNavClicked: () -> Unit = {}) {
         },
         elevation = 3.dp,
         navigationIcon = navigationIcon,
-        backgroundColor = MaterialTheme.colorScheme.background
+        backgroundColor = MaterialTheme.colorScheme.background,
     )
 }

@@ -3,6 +3,7 @@ package com.wikicoding.composetodolist.uiscreens
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -33,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -53,6 +55,9 @@ import com.wikicoding.composetodolist.data.Todo
 import com.wikicoding.composetodolist.navigation.AppBarView
 import com.wikicoding.composetodolist.navigation.Screen
 import com.wikicoding.composetodolist.viewmodel.TodoViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -141,6 +146,10 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                                 }
                             }
                         )
+                        scope.launch {
+                            delay(250L)
+                            dismissState.reset()
+                        }
                     }
                 }
             }
@@ -176,6 +185,7 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                 onDismissRequest = {
                     showDialog = false
                     todoToDelete = null
+                    navController.navigateUp()
                 },
                 confirmButton = {
                     Row(
@@ -197,6 +207,7 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                         Button(onClick = {
                             showDialog = false
                             todoToDelete = null
+                            navController.navigateUp()
                         }) {
                             Text(text = "CANCEL")
                         }

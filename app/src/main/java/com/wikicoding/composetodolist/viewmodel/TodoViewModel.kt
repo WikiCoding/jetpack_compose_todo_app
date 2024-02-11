@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.wikicoding.composetodolist.data.TodoRepository
 import com.wikicoding.composetodolist.data.Todo
+import com.wikicoding.composetodolist.data.TodoRepository
 import com.wikicoding.composetodolist.db.DbGraph
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,21 +23,16 @@ class TodoViewModel(
     var todoDescriptionState by mutableStateOf("")
     var todoCurrentDateState by mutableStateOf(LocalDateTime.now())
     var todoDueDateState by mutableStateOf("")
-    var todoCompletedState by mutableStateOf(false)
 
     fun onTodoDescriptionChange(newDescription: String) {
         todoDescriptionState = newDescription
-    }
-
-    fun onTodoDueDateChange(newDueDate: String) {
-        todoDueDateState = newDueDate
     }
 
     lateinit var getAll: Flow<List<Todo>>
 
     init {
         viewModelScope.launch {
-            getAll = todoRepository.getAll().map {todos ->
+            getAll = todoRepository.getAll().map { todos ->
                 todos.sortedByDescending { it.currentDate }
             }
         }
