@@ -2,6 +2,7 @@ package com.wikicoding.composetodolist.uiscreens
 
 import android.app.DatePickerDialog
 import android.os.Build
+import android.util.Log
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.wikicoding.composetodolist.data.Todo
 import com.wikicoding.composetodolist.navigation.AppBarView
+import com.wikicoding.composetodolist.navigation.Screen
 import com.wikicoding.composetodolist.viewmodel.TodoViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -75,7 +77,11 @@ fun AddEditTodoScreen(navController: NavController, todoViewModel: TodoViewModel
                 if (id != 0) "Update"
                 else "Add"
             )
-            { navController.navigateUp() }
+            {
+//                navController.navigateUp()
+                navController.popBackStack()
+                navController.navigate(Screen.HomeScreen.route)
+            }
             /** meaning up the stack, so go back to the prev screen **/
         },
         backgroundColor = MaterialTheme.colorScheme.background
@@ -139,7 +145,8 @@ fun AddEditTodoScreen(navController: NavController, todoViewModel: TodoViewModel
                         )
                     }
                     scope.launch {
-                        navController.navigateUp()
+                        navController.popBackStack()
+                        navController.navigate(Screen.HomeScreen.route)
                     }
                 }) {
                 Text(text = if (id == 0) "Add Todo" else "Update Todo")
