@@ -2,7 +2,6 @@ package com.wikicoding.composetodolist.uiscreens
 
 import android.app.DatePickerDialog
 import android.os.Build
-import android.util.Log
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable

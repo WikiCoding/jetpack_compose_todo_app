@@ -53,19 +53,19 @@ android {
 dependencies {
     //    navigation compose implementation
     val nav_version = "2.7.6"
-    val compose_version = "1.6.0-beta02"
+    val compose_version = "1.7.0-alpha01"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
     // swipe and other capabilities
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material:material:$compose_version")
-    implementation("androidx.compose.material3:material3:1.2.0-alpha02")
+    implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
 
     //Compose ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
-    val room = "2.6.0"
+    val room = "2.6.1"
 
     // Room
     implementation("androidx.room:room-runtime:$room")
