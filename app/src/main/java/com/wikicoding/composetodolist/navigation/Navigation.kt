@@ -17,8 +17,10 @@ import com.wikicoding.composetodolist.uiscreens.AddEditTodoScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Navigation(viewModel: TodoViewModel = viewModel(),
-               navController: NavHostController = rememberNavController()) {
+fun Navigation(
+    viewModel: TodoViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
+) {
     NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
         composable(Screen.HomeScreen.route) {
             HomeScreen(navController = navController, todoViewModel = viewModel)

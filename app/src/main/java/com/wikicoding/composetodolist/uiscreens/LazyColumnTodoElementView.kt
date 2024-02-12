@@ -1,8 +1,6 @@
 package com.wikicoding.composetodolist.uiscreens
 
-
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,7 +45,7 @@ fun LazyColumnTodoElement(todo: Todo, onClick: () -> Unit) {
                 updatedState = todo.completed
                 onClick()
             }
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -57,7 +55,8 @@ fun LazyColumnTodoElement(todo: Todo, onClick: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = todo.description,
+                Text(
+                    text = todo.description,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     softWrap = true,
@@ -73,7 +72,7 @@ fun LazyColumnTodoElement(todo: Todo, onClick: () -> Unit) {
                 Text(
                     text = "Created: " + todo.currentDate.format(
                         DateTimeFormatter.ofPattern(
-                            "dd-MM-yyyy H:MM:ss",
+                            "dd-MM-yyyy H:MM",
                             Locale.getDefault()
                         )
                     ), fontSize = 14.sp
@@ -85,8 +84,6 @@ fun LazyColumnTodoElement(todo: Todo, onClick: () -> Unit) {
                     modifier = Modifier.align(alignment = Alignment.CenterVertically)
                 )
             }
-
         }
-
     }
 }

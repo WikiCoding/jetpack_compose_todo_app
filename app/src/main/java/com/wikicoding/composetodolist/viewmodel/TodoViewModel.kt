@@ -32,9 +32,7 @@ class TodoViewModel(
 
     init {
         viewModelScope.launch {
-            getAll = todoRepository.getAll().map { todos ->
-                todos.sortedByDescending { it.currentDate }
-            }
+            getAll = todoRepository.getAll()
         }
     }
 

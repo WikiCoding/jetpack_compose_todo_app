@@ -15,7 +15,7 @@ abstract class TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun addTodo(todo: Todo)
 
-    @Query("SELECT * FROM `todo_table`")
+    @Query("SELECT * FROM `todo_table` ORDER BY completed ASC, currentDate DESC")
     abstract fun getAllTodos(): Flow<List<Todo>>
 
     @Query("SELECT * FROM `todo_table` WHERE id = :id")

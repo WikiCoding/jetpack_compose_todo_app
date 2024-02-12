@@ -1,4 +1,4 @@
-package com.wikicoding.composetodolist.uiscreens
+package com.wikicoding.composetodolist.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.wikicoding.composetodolist.data.Todo
 import com.wikicoding.composetodolist.viewmodel.TodoViewModel
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
