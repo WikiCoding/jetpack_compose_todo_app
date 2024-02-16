@@ -18,12 +18,11 @@ import com.wikicoding.composetodolist.uiscreens.AddEditTodoScreen
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(
-    viewModel: TodoViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
         composable(Screen.HomeScreen.route) {
-            HomeScreen(navController = navController, todoViewModel = viewModel)
+            HomeScreen(navController = navController)
         }
 
         composable(Screen.AddEditScreen.route + "/{id}",
@@ -36,7 +35,7 @@ fun Navigation(
             )
         ) {
             val id = if (it.arguments != null) it.arguments!!.getInt("id") else 0
-            AddEditTodoScreen(navController = navController, todoViewModel = viewModel, id = id)
+            AddEditTodoScreen(navController = navController, id = id)
         }
     }
 }

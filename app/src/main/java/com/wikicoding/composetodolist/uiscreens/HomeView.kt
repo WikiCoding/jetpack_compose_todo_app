@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.wikicoding.composetodolist.data.Todo
 import com.wikicoding.composetodolist.navigation.AppBarView
@@ -52,12 +54,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
+fun HomeScreen(navController: NavController) {
+    val todoViewModel = viewModel<TodoViewModel>()
+
     val todoList = todoViewModel.getAll.collectAsState(initial = listOf())
 
     val scaffoldState = rememberScaffoldState()
-
-    val scope = rememberCoroutineScope()
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -101,6 +103,7 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                                     else Color.Transparent,
                                     label = ""
                                 )
+
                                 Box(
                                     Modifier
                                         .fillMaxSize()
@@ -133,9 +136,15 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                                 }
                             }
                         )
-                        scope.launch {
-                            delay(250L)
-                            dismissState.reset()
+
+                        /** reset the dismissState after consuming the updateStateChange and
+                         * reset the dismissState of the Delete swipe after cancel **/
+                        if (dismissState.isDismissed(DismissDirection.EndToStart) || !showDialog) {
+                            LaunchedEffect(key1 = todo) {
+                                dismissState.reset()
+                                dismissState.reset()
+                                /** double reset solves the background color for some reason **/
+                            }
                         }
                     }
                 }
@@ -146,14 +155,7 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                     .fillMaxWidth()
                     .padding(8.dp),
                 onClick = {
-
-                    scope.launch {
-                        navController.navigate(Screen.AddEditScreen.route + "/0") {
-                            popUpTo(Screen.HomeScreen.route) {
-                                inclusive = true
-                            }
-                        }
-                    }
+                    navController.navigate(Screen.AddEditScreen.route + "/0")
                 }) {
                 Text(text = "Add Todo")
             }
@@ -172,7 +174,6 @@ fun HomeScreen(navController: NavController, todoViewModel: TodoViewModel) {
                 onDismissRequest = {
                     showDialog = false
                     todoToDelete = null
-                    navController.navigateUp()
                 },
                 confirmButton = {
                     Row(

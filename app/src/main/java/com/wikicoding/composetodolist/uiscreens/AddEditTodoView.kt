@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.wikicoding.composetodolist.data.Todo
 import com.wikicoding.composetodolist.navigation.AppBarView
@@ -42,11 +43,10 @@ import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AddEditTodoScreen(navController: NavController, todoViewModel: TodoViewModel, id: Int) {
+fun AddEditTodoScreen(navController: NavController, id: Int) {
+    val todoViewModel = viewModel<TodoViewModel>()
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
 
     val scaffoldState = rememberScaffoldState()
 
@@ -77,9 +77,7 @@ fun AddEditTodoScreen(navController: NavController, todoViewModel: TodoViewModel
                 else "Add"
             )
             {
-//                navController.navigateUp()
-                navController.popBackStack()
-                navController.navigate(Screen.HomeScreen.route)
+                navController.navigateUp()
             }
             /** meaning up the stack, so go back to the prev screen **/
         },
@@ -143,10 +141,8 @@ fun AddEditTodoScreen(navController: NavController, todoViewModel: TodoViewModel
                             )
                         )
                     }
-                    scope.launch {
-                        navController.popBackStack()
-                        navController.navigate(Screen.HomeScreen.route)
-                    }
+
+                    navController.navigateUp()
                 }) {
                 Text(text = if (id == 0) "Add Todo" else "Update Todo")
             }
