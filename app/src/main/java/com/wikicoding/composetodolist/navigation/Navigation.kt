@@ -13,11 +13,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
+import com.wikicoding.composespeechtotext.VoiceToTextParser
 import com.wikicoding.composetodolist.uiscreens.AddEditTodoScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(
+    voiceToTextParser: VoiceToTextParser,
     navController: NavHostController = rememberNavController()
 ) {
     NavHost(navController = navController, startDestination = Screen.HomeScreen.route) {
@@ -35,7 +37,7 @@ fun Navigation(
             )
         ) {
             val id = if (it.arguments != null) it.arguments!!.getInt("id") else 0
-            AddEditTodoScreen(navController = navController, id = id)
+            AddEditTodoScreen(navController = navController, id = id, voiceToTextParser = voiceToTextParser)
         }
     }
 }
