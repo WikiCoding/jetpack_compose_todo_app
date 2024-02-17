@@ -2,7 +2,6 @@ package com.wikicoding.composetodolist.uiscreens
 
 import android.app.DatePickerDialog
 import android.os.Build
-import android.util.Log
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
@@ -52,7 +51,7 @@ import java.util.Date
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: VoiceToTextParser) {
-    val state by voiceToTextParser.state.collectAsState()
+    val speechTextState by voiceToTextParser.state.collectAsState()
 
     val todoViewModel = viewModel<TodoViewModel>()
     val context = LocalContext.current
@@ -74,7 +73,7 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
         todoViewModel.todoCurrentDateState = todo.value.currentDate
         todoViewModel.todoDueDateState = todo.value.dueDate.format(DateTimeFormatter.ISO_DATE)
     } else {
-        todoViewModel.todoDescriptionState = ""
+        todoViewModel.todoDescriptionState = speechTextState.spokenText
         todoViewModel.todoDueDateState = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)
     }
 
@@ -104,11 +103,7 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
             OutlinedTextField(
                 value = todoViewModel.todoDescriptionState,
                 onValueChange = {
-//                    if (!state.isSpeaking) {
-                        todoViewModel.onTodoDescriptionChange(it)
-//                    } else {
-//                        todoViewModel.onTodoDescriptionChange(state.spokenText)
-//                    }
+                    todoViewModel.onTodoDescriptionChange(it)
                 },
                 label = { Text(text = "Description") },
                 singleLine = false,
@@ -117,9 +112,15 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
                     .padding(8.dp)
             )
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 36.dp))
+            LaunchedEffect(key1 = speechTextState.spokenText) {
+                todoViewModel.todoDescriptionState = speechTextState.spokenText
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 36.dp)
+            )
 
             Text(
                 text = "Due date: " + todoViewModel.todoDueDateState,
@@ -129,9 +130,11 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
                 fontSize = 24.sp
             )
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 36.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 36.dp)
+            )
 
             Button(
                 modifier = Modifier
@@ -170,21 +173,22 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
                 Text(fontSize = 18.sp, text = if (id == 0) "Add Todo" else "Update Todo")
             }
 
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 36.dp))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 36.dp)
+            )
 
-            // TODO: feature not ready yet
-            if (id == -1) {
+            if (id == 0) {
                 Button(onClick = {
-                    if (state.isSpeaking) {
+                    if (speechTextState.isSpeaking) {
                         voiceToTextParser.stopListening()
                     } else {
                         voiceToTextParser.startListening("PT")
                     }
                 }, modifier = Modifier.padding(8.dp)) {
                     AnimatedContent(
-                        targetState = state.isSpeaking,
+                        targetState = speechTextState.isSpeaking,
                         label = ""
                     ) { isSpeaking ->
                         if (isSpeaking) {
@@ -219,9 +223,11 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
                     }
                 }
 
-                Spacer(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 36.dp))
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 36.dp)
+                )
             }
 
             Text(
