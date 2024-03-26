@@ -154,6 +154,7 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
                                 )
                             )
                         )
+                        speechTextState.spokenText = ""
                     } else {
                         todoViewModel.update(
                             todo = Todo(
@@ -166,6 +167,7 @@ fun AddEditTodoScreen(navController: NavController, id: Int, voiceToTextParser: 
                                 )
                             )
                         )
+                        speechTextState.spokenText = ""
                     }
 
                     navController.navigateUp()
